@@ -1,6 +1,8 @@
 [build]
-  publish = "dist" # Replace with your output directory if different
+  publish = "dist" # Replace "dist" with your output folder, e.g., "public"
+  command = "" # Omit build commands if your site is plain HTML/CSS/JS
 
-[[plugins]]
-  package = "@netlify/plugin-inline-functions-env"
-
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
