@@ -1,8 +1,6 @@
 [build]
-  publish = "." # Replace "dist" with your output folder, e.g., "public"
-  command = "" # Omit build commands if your site is plain HTML/CSS/JS
+  publish = "."
+  command = ""  
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+[functions]
+  directory = "netlify/functions"
