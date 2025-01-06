@@ -1,5 +1,5 @@
 [build]
-  publish = "dist" # Replace "dist" with your output folder, e.g., "public"
+  publish = "." # Replace "dist" with your output folder, e.g., "public"
   command = "" # Omit build commands if your site is plain HTML/CSS/JS
 
 [[redirects]]
