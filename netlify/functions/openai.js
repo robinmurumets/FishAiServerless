@@ -4,45 +4,43 @@ export async function handler(event) {
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
-    console.error('Missing API key.');
+    console.error('API key is missing from environment variables.');
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'API key is missing.' }),
+      body: JSON.stringify({ error: 'API key is missing from server environment.' }),
     };
   }
 
   try {
-    console.log('Incoming request body:', event.body); // Log request body
+    console.log('API key loaded successfully:', apiKey ? 'Yes' : 'No'); // Masked logging
 
-    const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${apiKey}`,
       },
-      body: event.body, // Forward the body from the frontend
+      body: event.body,
     });
 
-    if (!openAIResponse.ok) {
-      console.error('OpenAI API error:', await openAIResponse.text()); // Log API errors
+    if (!response.ok) {
+      console.error('Error from OpenAI API:', await response.text());
       return {
-        statusCode: openAIResponse.status,
+        statusCode: response.status,
         body: JSON.stringify({ error: 'Failed to fetch OpenAI API' }),
       };
     }
 
-    const data = await openAIResponse.json();
-    console.log('OpenAI response:', data); // Log successful response
-
+    const data = await response.json();
     return {
       statusCode: 200,
       body: JSON.stringify(data),
     };
   } catch (error) {
-    console.error('Error communicating with OpenAI API:', error.message); // Log unexpected errors
+    console.error('Unexpected server error:', error.message);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Server error occurred', details: error.message }),
+      body: JSON.stringify({ error: 'Unexpected server error', details: error.message }),
     };
   }
 }
