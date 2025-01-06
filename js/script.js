@@ -23,7 +23,7 @@ async function sendMessageToServer(promptText) {
   conversation.push({ role: "user", content: promptText });
 
   try {
-    const response = await fetch('/.netlify/functions/proxy', {
+    const response = await fetch('/.netlify/functions/openai', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
