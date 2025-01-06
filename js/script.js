@@ -23,7 +23,7 @@ async function sendMessageToServer(promptText) {
   conversation.push({ role: "user", content: promptText });
 
   try {
-    const response = await fetch('http://localhost:3000/api/proxy', {
+    const response = await fetch('/.netlify/functions/proxy', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
