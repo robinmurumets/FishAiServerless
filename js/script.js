@@ -6,6 +6,9 @@ const chatWindow = document.getElementById("chatWindow");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 
+// Hardcoded API Key (Replace with your actual OpenAI API key)
+const OPENAI_API_KEY = "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";
+
 function addMessageToChat(role, text) {
   const messageContainer = document.createElement("div");
   messageContainer.classList.add("message-container", role === "user" ? "user" : "bot");
@@ -23,13 +26,15 @@ async function sendMessageToServer(promptText) {
   conversation.push({ role: "user", content: promptText });
 
   try {
-    const response = await fetch('/.netlify/functions/openai', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${OPENAI_API_KEY}`, // Use the hardcoded API key here
       },
       body: JSON.stringify({
-        conversation: conversation,
+        model: "gpt-4", // Replace with the correct model you’re using
+        messages: conversation, // OpenAI expects the "messages" key for conversation context
       }),
     });
 
