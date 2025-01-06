@@ -4,7 +4,7 @@ export async function handler(event) {
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
-    console.error('API key is missing.');
+    console.error('Missing API key.');
     return {
       statusCode: 500,
       body: JSON.stringify({ error: 'API key is missing.' }),
@@ -12,30 +12,37 @@ export async function handler(event) {
   }
 
   try {
-    console.log('Request body:', event.body); // Log incoming request body
+    console.log('Incoming request body:', event.body); // Log request body
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${apiKey}`,
       },
-      body: event.body, // Forward the request body directly
+      body: event.body, // Forward the body from the frontend
     });
 
-    const data = await response.json();
+    if (!openAIResponse.ok) {
+      console.error('OpenAI API error:', await openAIResponse.text()); // Log API errors
+      return {
+        statusCode: openAIResponse.status,
+        body: JSON.stringify({ error: 'Failed to fetch OpenAI API' }),
+      };
+    }
 
-    console.log('OpenAI API response:', data); // Log OpenAI API response
+    const data = await openAIResponse.json();
+    console.log('OpenAI response:', data); // Log successful response
 
     return {
       statusCode: 200,
       body: JSON.stringify(data),
     };
   } catch (error) {
-    console.error('Error fetching OpenAI API:', error); // Log errors
+    console.error('Error communicating with OpenAI API:', error.message); // Log unexpected errors
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to fetch OpenAI API', details: error.message }),
+      body: JSON.stringify({ error: 'Server error occurred', details: error.message }),
     };
   }
 }
