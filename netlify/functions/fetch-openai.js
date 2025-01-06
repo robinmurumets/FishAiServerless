@@ -1,6 +1,6 @@
-const fetch = require('node-fetch');
+import fetch from "node-fetch";
 
-exports.handler = async (event) => {
+export async function handler(event) {
     const { conversation } = JSON.parse(event.body);
 
     if (!conversation || !Array.isArray(conversation)) {
@@ -46,4 +46,4 @@ exports.handler = async (event) => {
             body: JSON.stringify({ error: "Failed to fetch from OpenAI API" }),
         };
     }
-};
+}
