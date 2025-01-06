@@ -1,2 +1,6 @@
-[functions]
-directory = "netlify/functions"
+[build]
+  publish = "dist" # Replace with your output directory if different
+
+[[plugins]]
+  package = "@netlify/plugin-inline-functions-env"
+

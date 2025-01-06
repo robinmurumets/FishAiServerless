@@ -7,7 +7,7 @@ const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 
 
-OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = document.querySelector('meta[name="openai-api-key"]').content;
 
 function addMessageToChat(role, text) {
   const messageContainer = document.createElement("div");
